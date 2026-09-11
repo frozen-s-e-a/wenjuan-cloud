@@ -1,0 +1,2 @@
+start.cmd -text whitespace=cr-at-eol
+start.sh text eol=lf

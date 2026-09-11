@@ -46,3 +46,13 @@ Windows 将 `.venv/bin/python` 换成 `.venv\Scripts\python.exe`。
 7. 创建备份，停止服务后恢复，核对计数；最后再进行 Docker 与目标服务器验收。
 
 10,000 条历史回答、每秒 5 次提交持续 10 分钟及每秒 20 次提交持续 30 秒仍是 v0.2 的待测目标，不应视为已通过的性能指标。若达到该规模，请在正式活动前完成实测。
+
+## Windows 启动诊断补丁
+
+启动器错误处理通过 3 项标准库单元测试：子进程失败保留非零退出码并写日志、日志不可写时仍报告原始异常、用户中断不生成错误日志。
+
+```bash
+python -m unittest discover -s scripts -p test_start.py -v
+```
+
+`start.cmd` 已检查为 ASCII / CRLF，使用 `cmd /k` 保留窗口。未在 Windows 实机执行批处理，用户电脑上原始启动失败原因仍需查看窗口或日志。

@@ -18,3 +18,5 @@ frontend/dist/
 
 *.tsbuildinfo
 *.egg-info/
+
+startup-error.log

@@ -13,3 +13,5 @@ backups
 **/*.tsbuildinfo
 *.tar
 *.tar.gz
+
+startup-error.log
