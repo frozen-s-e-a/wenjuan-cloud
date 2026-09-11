@@ -1,0 +1,45 @@
+services:
+  app:
+    image: ${APP_IMAGE:-wenjuan-cloud:0.1.0}
+    build: .
+    environment:
+      APP_ENV: ${APP_ENV:-local}
+      PUBLIC_ORIGIN: ${PUBLIC_ORIGIN:-http://localhost:8000}
+      COOKIE_SECURE: ${COOKIE_SECURE:-false}
+      APP_SECRET: ${APP_SECRET:?Set APP_SECRET in the environment file}
+      APP_DATA_DIR: /app/data
+    volumes:
+      - ${DATA_DIR:-./data}:/app/data
+      - ${BACKUP_DIR:-./backups}:/app/backups
+    expose:
+      - "8000"
+    restart: unless-stopped
+    stop_grace_period: 60s
+    init: true
+    mem_limit: 1024m
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+  proxy:
+    image: caddy:2.10.2-alpine
+    environment:
+      SITE_ADDRESS: ${SITE_ADDRESS:-:80}
+    volumes:
+      - ./deploy/Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on:
+      app:
+        condition: service_healthy
+    restart: unless-stopped
+    mem_limit: 128m
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+volumes:
+  caddy_data:
+  caddy_config:

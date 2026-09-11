@@ -1,0 +1,15 @@
+.git
+.venv
+.env
+.env.*
+data
+backups
+**/node_modules
+**/dist
+**/__pycache__
+**/.pytest_cache
+**/*.db
+**/*.db-*
+**/*.tsbuildinfo
+*.tar
+*.tar.gz
